@@ -11,8 +11,9 @@ defmodule AudioSurf.Extractor do
   end
 
   def frames(data, frame_size) do
-    for <<left::little-integer-signed-size(frame_size), rigth::little-integer-signed-size(frame_size) <- data>>,
-      do: [left, rigth]
+    for <<left::little-integer-signed-size(frame_size),
+          rigth::little-integer-signed-size(frame_size) <- data>>,
+        do: [left, rigth]
   end
 
   def frame(data, size, offset \\ 0) do
