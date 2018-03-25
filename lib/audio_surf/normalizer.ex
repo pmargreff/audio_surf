@@ -2,7 +2,8 @@ defmodule AudioSurf.Normalizer do
   @moduledoc """
   Documentation for AudioSurf.Normalizer
   """
-  def to_positive(list, offset) do
+
+  def add(list, offset) do
     List.flatten(list)
     |> Enum.map(fn x -> x + offset end)
     |> Enum.chunk_every(2)

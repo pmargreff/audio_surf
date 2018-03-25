@@ -16,6 +16,16 @@ defmodule AudioSurf.Extractor do
         do: [left, rigth]
   end
 
+  def frames(data, frame_size, :left) do
+    frames(data, frame_size)
+    |> Enum.map(fn(x) -> Enum.at(x, 0) end)
+  end
+
+  def frames(data, frame_size, :right) do
+    frames(data, frame_size)
+    |> Enum.map(fn(x) -> Enum.at(x, 1) end)
+  end
+
   def frame(data, size, offset \\ 0) do
     # block align = bits per sample x channels
     absolute_offset = offset * 2 * 2
