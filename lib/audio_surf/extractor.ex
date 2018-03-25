@@ -2,11 +2,17 @@ defmodule AudioSurf.Extractor do
   @moduledoc """
   Documentation for AudioSurf.Extractor.
   """
-  def data(file_path) do
-    case File.read(file_path) do
+
+  def data(file) when is_bitstring(file) do
+    case File.read(file) do
       {:ok, body} -> extract_data(body)
-      {:error, reason} -> "There was an error on #{file_path}: #{reason}"
+      {:error, reason} -> "There was an error on #{file}: #{reason}"
     end
+  end
+
+  def frame(data, size, offset \\ 0) do
+    absolute_offset = (offset * 2 * 2) # block align = bits per sample x channels
+    [extract_frame(data, size, absolute_offset), extract_frame(data, size, absolute_offset + 2)]
   end
 
   defp extract_data(body) do
@@ -28,5 +34,11 @@ defmodule AudioSurf.Extractor do
     >> = body
 
     data
+  end
+
+  defp extract_frame(data, size, offset) do
+    <<_offset::binary-size(offset), extracted_frame::little-integer-signed-size(size), _::binary>> =
+      data
+      extracted_frame
   end
 end
