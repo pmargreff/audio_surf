@@ -10,8 +10,14 @@ defmodule AudioSurf.Extractor do
     end
   end
 
+  def frames(data, frame_size) do
+    for <<left::little-integer-signed-size(frame_size), rigth::little-integer-signed-size(frame_size) <- data>>,
+      do: [left, rigth]
+  end
+
   def frame(data, size, offset \\ 0) do
-    absolute_offset = (offset * 2 * 2) # block align = bits per sample x channels
+    # block align = bits per sample x channels
+    absolute_offset = offset * 2 * 2
     [extract_frame(data, size, absolute_offset), extract_frame(data, size, absolute_offset + 2)]
   end
 
@@ -39,6 +45,7 @@ defmodule AudioSurf.Extractor do
   defp extract_frame(data, size, offset) do
     <<_offset::binary-size(offset), extracted_frame::little-integer-signed-size(size), _::binary>> =
       data
-      extracted_frame
+
+    extracted_frame
   end
 end
