@@ -17,4 +17,16 @@ defmodule AudioSurf.Frames.Utils do
     |> Enum.map(fn x -> Kernel.round(x / max * equalizator) end)
     |> Enum.chunk_every(2)
   end
+
+  def sampling(frames, sample_size) do
+    sample_interval = interval(length(frames), sample_size)
+
+    Enum.take_every(frames, sample_interval)
+    |> Enum.slice(1..sample_size)
+  end
+
+  # TODO raise error if interval is higher than frames size
+  defp interval(frames_lenght, sample_size) do
+    (frames_lenght / sample_size) |> trunc
+  end
 end
