@@ -2,7 +2,7 @@ defmodule AudioSurf.Reader do
   alias AudioSurf.Audio
 
   @moduledoc """
-  Documentation for AudioSurf.Reader
+    Documentation for AudioSurf.Reader
   """
 
   def open(filepath) do

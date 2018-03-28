@@ -3,7 +3,7 @@ defmodule AudioSurf.Frames.Utils do
   Documentation for AudioSurf.Frames.Normalizer
   """
 
-  def add(frames, offset) do
+  def add(frames, offset \\ 32768) do
     List.flatten(frames)
     |> Enum.map(fn x -> x + offset end)
     |> Enum.chunk_every(2)
