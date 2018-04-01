@@ -17,4 +17,40 @@ defmodule AudioSurfExtractorTest do
     assert min_frame_value >= min_possible, "min value is higher than possible min"
     assert max_frame_value <= max_possible, "max value is lower than possible max"
   end
+
+  test "frame/1 allow offset on frames" do
+    filepath = "#{File.cwd!()}/test/dual_channel_stub.wav"
+    {:ok, audio} = AudioSurf.Reader.read(filepath)
+    first_frame = AudioSurf.Extractor.frame(audio, 0)
+    last_frame = AudioSurf.Extractor.frame(audio, 669_354)
+
+    assert first_frame == [20041, 20294], "first frame values"
+    assert last_frame == [0, 0], "last frame values"
+  end
+
+  @tag :skip
+  test "frame/1 allow list size on frame" do
+  end
+
+  test "channel/2 with right" do
+    filepath = "#{File.cwd!()}/test/dual_channel_stub.wav"
+    {:ok, audio} = AudioSurf.Reader.read(filepath)
+    frames = AudioSurf.Extractor.frames(audio)
+    right_frames = AudioSurf.Extractor.channel(frames, :right)
+
+    assert Enum.count(right_frames) == 669_355, "it has the same frame size"
+    assert List.first(right_frames) == 20294, "it has the same first frame"
+    assert List.last(right_frames) == 0, "it has the same last frame"
+  end
+
+  test "channel/2 with left" do
+    filepath = "#{File.cwd!()}/test/dual_channel_stub.wav"
+    {:ok, audio} = AudioSurf.Reader.read(filepath)
+    frames = AudioSurf.Extractor.frames(audio)
+    right_frames = AudioSurf.Extractor.channel(frames, :left)
+
+    assert Enum.count(right_frames) == 669_355, "it has the same frame size"
+    assert List.first(right_frames) == 20041, "it has the same first frame"
+    assert List.last(right_frames) == 0, "it has the same last frame"
+  end
 end
