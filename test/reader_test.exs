@@ -38,7 +38,7 @@ defmodule AudioSurfReaderTest do
     filepath = "#{File.cwd!()}/test/dual_channel_stub.wav"
 
     {:ok, audio} = AudioSurf.Reader.read(filepath)
-    assert audio.block_align == audio.num_channels * (audio.bits_per_sample / 8 |> round())
+    assert audio.block_align == audio.num_channels * ((audio.bits_per_sample / 8) |> round())
     assert audio.byte_rate == audio.sample_rate * audio.block_align
   end
 
