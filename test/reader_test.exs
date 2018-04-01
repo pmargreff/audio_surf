@@ -3,17 +3,17 @@ defmodule AudioSurfReaderTest do
 
   doctest AudioSurf.Reader
 
-  test "open/1 file doesn't exists" do
+  test "read/1 file doesn't exists" do
     filepath = "doesnt_exist.txt"
     error_message = "There was an error on #{filepath}: enoent"
 
-    assert AudioSurf.Reader.open(filepath) == {:error, error_message}
+    assert AudioSurf.Reader.read(filepath) == {:error, error_message}
   end
 
-  test "open/1 open file" do
+  test "read/1 read file" do
     filepath = "#{File.cwd!()}/test/dual_channel_stub.wav"
 
-    {:ok, audio} = AudioSurf.Reader.open(filepath)
+    {:ok, audio} = AudioSurf.Reader.read(filepath)
 
     assert audio.audio_format == 1
     assert audio.bits_per_sample == 16

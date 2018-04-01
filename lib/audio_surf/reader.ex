@@ -2,10 +2,17 @@ defmodule AudioSurf.Reader do
   alias AudioSurf.Audio
 
   @moduledoc """
-    Documentation for AudioSurf.Reader
+    This module provide basic content basic way to read .wav files,
+    on a way it's structured to be handled by the others related modules.
+
+    In general the developer will be able to handle the files in the different
+    ways, the first one is the raw and not human readable data, which is available
+    through a field on Audio structure. The second one should the frame list which
+    the frames for each module, this one is available through a funcitions on
+    extractor module.
   """
 
-  def open(filepath) do
+  def read(filepath) do
     case File.read(filepath) do
       {:ok, body} -> {:ok, extract_audio(body)}
       {:error, reason} -> {:error, "There was an error on #{filepath}: #{reason}"}
