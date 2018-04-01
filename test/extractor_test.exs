@@ -3,10 +3,10 @@ defmodule AudioSurfExtractorTest do
 
   doctest AudioSurf.Extractor
 
-  test "frames/1 for dual channel audio" do
-    filepath = "#{File.cwd!()}/test/dual_channel_stub.wav"
+  setup_all :open_dual_channel_audio
 
-    {:ok, audio} = AudioSurf.Reader.read(filepath)
+  test "frames/1 for dual channel audio", context do
+    audio = context[:audio]
     frames = AudioSurf.Extractor.frames(audio)
     max_possible = :math.pow(2, audio.bits_per_sample) |> round
     min_possible = :math.pow(2, audio.bits_per_sample) |> round |> (&(&1 * -1 + 1)).()
@@ -18,11 +18,9 @@ defmodule AudioSurfExtractorTest do
     assert max_frame_value <= max_possible, "max value is lower than possible max"
   end
 
-  test "frame/1 allow offset on frames" do
-    filepath = "#{File.cwd!()}/test/dual_channel_stub.wav"
-    {:ok, audio} = AudioSurf.Reader.read(filepath)
-    first_frame = AudioSurf.Extractor.frame(audio, 0)
-    last_frame = AudioSurf.Extractor.frame(audio, 669_354)
+  test "frame/1 allow offset on frames", context do
+    first_frame = AudioSurf.Extractor.frame(context[:audio], 0)
+    last_frame = AudioSurf.Extractor.frame(context[:audio], 669_354)
 
     assert first_frame == [20041, 20294], "first frame values"
     assert last_frame == [0, 0], "last frame values"
@@ -32,10 +30,8 @@ defmodule AudioSurfExtractorTest do
   test "frame/1 allow list size on frame" do
   end
 
-  test "channel/2 with right" do
-    filepath = "#{File.cwd!()}/test/dual_channel_stub.wav"
-    {:ok, audio} = AudioSurf.Reader.read(filepath)
-    frames = AudioSurf.Extractor.frames(audio)
+  test "channel/2 with right", context do
+    frames = AudioSurf.Extractor.frames(context[:audio])
     right_frames = AudioSurf.Extractor.channel(frames, :right)
 
     assert Enum.count(right_frames) == 669_355, "it has the same frame size"
@@ -43,14 +39,19 @@ defmodule AudioSurfExtractorTest do
     assert List.last(right_frames) == 0, "it has the same last frame"
   end
 
-  test "channel/2 with left" do
-    filepath = "#{File.cwd!()}/test/dual_channel_stub.wav"
-    {:ok, audio} = AudioSurf.Reader.read(filepath)
-    frames = AudioSurf.Extractor.frames(audio)
+  test "channel/2 with left", context do
+    frames = AudioSurf.Extractor.frames(context[:audio])
     right_frames = AudioSurf.Extractor.channel(frames, :left)
 
     assert Enum.count(right_frames) == 669_355, "it has the same frame size"
     assert List.first(right_frames) == 20041, "it has the same first frame"
     assert List.last(right_frames) == 0, "it has the same last frame"
+  end
+
+  defp open_dual_channel_audio(_) do
+    filepath = "#{File.cwd!()}/test/dual_channel_stub.wav"
+    {:ok, audio} = AudioSurf.Reader.read(filepath)
+
+    [audio: audio]
   end
 end
