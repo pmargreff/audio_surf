@@ -5,7 +5,7 @@ defmodule AudioSurfExtractorTest do
 
   setup_all :open_dual_channel_audio
 
-  test "frames/1 for dual channel audio", context do
+  test "get frames without optional params", context do
     audio = context[:audio]
     frames = AudioSurf.Extractor.frames(audio)
     max_possible = :math.pow(2, audio.bits_per_sample) |> round
@@ -18,16 +18,18 @@ defmodule AudioSurfExtractorTest do
     assert max_frame_value <= max_possible, "max value is lower than possible max"
   end
 
-  test "frame/1 allow offset on frames", context do
-    first_frame = AudioSurf.Extractor.frame(context[:audio], 0)
-    last_frame = AudioSurf.Extractor.frame(context[:audio], 669_354)
+  test "get frames with offset", context do
+    offset = :rand.uniform(669_355)
+    frames = AudioSurf.Extractor.frames(context[:audio], offset: offset)
 
-    assert first_frame == [20041, 20294], "first frame values"
-    assert last_frame == [0, 0], "last frame values"
+    assert Enum.count(frames) == 669_355 - offset, "has the complement size value"
   end
 
-  @tag :skip
-  test "frame/1 allow list size on frame" do
+  test "get frames with fixed amount", context do
+    amount = :rand.uniform(669_355)
+    frames = AudioSurf.Extractor.frames(context[:audio], amount: amount)
+
+    assert Enum.count(frames) == amount, "has the same size from amount"
   end
 
   test "channel/2 with right", context do
