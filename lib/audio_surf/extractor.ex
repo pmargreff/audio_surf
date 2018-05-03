@@ -14,7 +14,7 @@ defmodule AudioSurf.Extractor do
     Enum.map(frames, fn x -> Enum.at(x, channel_number) end)
   end
 
-  @doc ~S"""
+  @doc """
   Returns a list of frames (integers represented) parsed from audio's data.
 
   ## Parameters
@@ -27,23 +27,6 @@ defmodule AudioSurf.Extractor do
 
    * :offset - The first valid frame, all before this will not be returned.
    The default value is 0.
-
-  ## Examples
-
-      iex> AudioSurf.Extractor.frames(audio)
-      [
-        [0, 0]
-        [-2, -8]
-        [9, 18]
-        [233, 89]
-        ...
-      ]
-
-      iex> AudioSurf.Extractor.frames(audio, offset: 2, amount: 2)
-      [
-        [9, 18]
-        [233, 89]
-      ]
   """
 
   def frames(
