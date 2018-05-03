@@ -5,7 +5,7 @@ defmodule AudioSurf.MixProject do
     [
       app: :audio_surf,
       version: "0.1.2",
-      elixir: "~> 1.6",
+      elixir: "~> 1.5",
       start_permanent: Mix.env() == :prod,
       deps: deps()
     ]
