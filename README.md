@@ -1,6 +1,6 @@
 # AudioSurf
 
-[![Build Status](https://travis-ci.org/pmargreff/audio_surf.svg?branch=master)](https://travis-ci.org/pmargreff/audio_surf)
+[![Build Status](https://travis-ci.com/pmargreff/audio_surf.svg?branch=master)](https://travis-ci.org/pmargreff/audio_surf)
 
 
 **TODO: Add description**
