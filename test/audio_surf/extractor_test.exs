@@ -1,4 +1,4 @@
-defmodule AudioSurfExtractorTest do
+defmodule AudioSurf.Extractor.Test do
   use ExUnit.Case
 
   doctest AudioSurf.Extractor

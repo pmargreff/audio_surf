@@ -1,4 +1,4 @@
-defmodule AudioSurfReaderTest do
+defmodule AudioSurf.Reader.Test do
   use ExUnit.Case
 
   doctest AudioSurf.Reader
